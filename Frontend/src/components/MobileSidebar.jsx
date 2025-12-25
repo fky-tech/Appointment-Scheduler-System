@@ -1,0 +1,48 @@
+import React from 'react';
+import { FaTh, FaCalendarAlt, FaPlus, FaUserEdit, FaExchangeAlt } from 'react-icons/fa';
+import { useCustomization } from '../context/CustomizationContext';
+
+const navItems = [
+  { name: 'Dashboard', icon: <FaTh /> },
+  { name: 'View Appointment', icon: <FaCalendarAlt /> },
+  { name: 'Add Service', icon: <FaPlus /> },
+  { name: 'Update Information', icon: <FaUserEdit /> },
+  { name: 'View Transaction', icon: <FaExchangeAlt /> },
+];
+
+const MobileSidebar = ({ setActiveTab, activeTab }) => {
+  const { customization } = useCustomization();
+
+  const mobileSidebarStyle = {
+    backgroundColor: customization.sidebar_bg,
+    color: customization.sidebar_text,
+    boxShadow: `0 -2px 10px ${customization.theme_button}10`
+  };
+
+  const activeItemStyle = {
+    color: customization.theme_button
+  };
+
+  return (
+    <div 
+      className="md:hidden fixed bottom-0 left-0 right-0 shadow-lg p-1 flex justify-between z-50"
+      style={mobileSidebarStyle}
+    >
+      {navItems.map(item => (
+        <div
+          key={item.name}
+          className={`flex flex-col items-center flex-1 p-2 rounded-lg cursor-pointer transition-colors duration-200 text-center ${
+            activeTab === item.name ? 'font-semibold' : ''
+          }`}
+          style={activeTab === item.name ? activeItemStyle : { color: customization.sidebar_text }}
+          onClick={() => setActiveTab(item.name)}
+        >
+          <div className="text-lg md:text-xl">{item.icon}</div>
+          <span className="text-[0.6rem] sm:text-xs mt-1 leading-none">{item.name}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default MobileSidebar;
